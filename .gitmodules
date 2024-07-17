@@ -1,0 +1,3 @@
+[submodule "mozcdic-ut-builder"]
+	path = mozcdic-ut-builder
+	url = git@github.com:soltia48/mozcdic-ut-builder.git
