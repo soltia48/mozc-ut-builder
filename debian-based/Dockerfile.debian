@@ -6,15 +6,10 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Enable apt source repository
 RUN sed -i -e 's/^Types: deb/Types: deb deb-src/g' /etc/apt/sources.list.d/debian.sources
 
-# Upgrade packages
+# Install packages
 RUN apt-get update \
-    && apt-get -y upgrade
-
-# Install dependencies
-RUN apt-get -y build-dep mozc
-
-# Cleanup
-RUN apt-get -y autoremove \
+    && apt-get -y build-dep mozc \
+    && apt-get -y autoremove \
     && apt-get -y clean \
     && rm -rf /var/lib/apt/lists/*
 
