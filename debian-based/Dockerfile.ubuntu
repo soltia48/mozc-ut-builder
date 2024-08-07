@@ -1,22 +1,26 @@
-ARG DISTRIBUTION_TAG=latest
-FROM ubuntu:${DISTRIBUTION_TAG}
+# syntax=docker/dockerfile:1
 
-ENV DEBIAN_FRONTEND=noninteractive
+ARG DISTRIBUTION_TAG=latest
+FROM ubuntu:${DISTRIBUTION_TAG} AS builder
 
 # Enable apt source repository
 RUN sed -i -e 's/^# deb-src /deb-src /g' /etc/apt/sources.list
 # Ubuntu 24.04 or later
 RUN sed -i -e 's/^Types: deb/Types: deb deb-src/g' /etc/apt/sources.list.d/ubuntu.sources
 
-# Install packages
-RUN apt-get update \
-    && apt-get -y build-dep mozc \
-    && apt-get -y autoremove \
-    && apt-get -y clean \
-    && rm -rf /var/lib/apt/lists/*
+# Install packages for building
+RUN --mount=type=cache,target=/var/lib/apt/,sharing=locked \
+    --mount=type=cache,target=/var/cache/apt/,sharing=locked \
+    apt-get update && apt-get -y build-dep mozc
 
-# Copy code
-WORKDIR /tmp/mozc-ut/
-COPY ./scripts/ ./scripts/
+WORKDIR /workspace/build/
 
-ENTRYPOINT [ "/bin/bash" ]
+# Build
+RUN --mount=type=bind,source=.,rw \
+    bash ./scripts/download-src.sh \
+    && bash ./scripts/build-mozc.sh \
+    && cp ./*.deb ../
+
+FROM scratch AS export
+
+COPY --from=builder /workspace/*.deb /

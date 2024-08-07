@@ -1,2 +1,5 @@
 # Output directories
 dist.*/
+
+# Intermediates
+*-based/mozcdic-ut.txt

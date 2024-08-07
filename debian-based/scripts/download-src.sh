@@ -2,5 +2,4 @@
 
 set -e
 
-apt-get update
-apt-get source mozc
+apt-get update && apt-get source mozc
