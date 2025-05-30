@@ -53,7 +53,7 @@ You can skip to run `build.sh` manually before this operation.
 
 ## Authors
 
-- soltia48
+- KIRISHIKI Yudai
 
 ## Thanks
 
@@ -63,4 +63,4 @@ You can skip to run `build.sh` manually before this operation.
 
 [MIT](https://opensource.org/licenses/MIT)
 
-Copyright (c) 2024 soltia48
+Copyright (c) 2024-2025 KIRISHIKI Yudai
